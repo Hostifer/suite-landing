@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 import { Button, Field, Input, Select, Textarea } from "@hostifer/shared-ui";
 import { brand } from "@/components/site/theme";
 
@@ -29,6 +29,8 @@ export function ContactForm() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const set = (key: keyof typeof form) => (value: string) =>
     setForm((f) => ({ ...f, [key]: value }));
@@ -45,6 +47,42 @@ export function ContactForm() {
       message: "",
     });
     setSubmitted(false);
+    setSubmitError("");
+    setIsSubmitting(false);
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        const body = (await response.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+
+        throw new Error(
+          body?.error ?? "Could not send your request. Please try again.",
+        );
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Could not send your request. Please try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const firstName = form.fullName ? `, ${form.fullName.split(" ")[0]}` : "";
@@ -117,10 +155,7 @@ export function ContactForm() {
           </div>
         ) : (
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSubmitted(true);
-            }}
+            onSubmit={handleSubmit}
             style={{ display: "flex", flexDirection: "column", gap: 18 }}
           >
             <div
@@ -222,10 +257,25 @@ export function ContactForm() {
             <Button
               type="submit"
               variant="primary"
+              disabled={isSubmitting}
               style={{ justifyContent: "center", width: "100%" }}
             >
-              Request trial / demo
+              {isSubmitting ? "Sending request..." : "Request trial / demo"}
             </Button>
+            {submitError ? (
+              <p
+                role="alert"
+                style={{
+                  fontSize: 13,
+                  color: "#b42318",
+                  textAlign: "center",
+                  margin: 0,
+                  fontWeight: 700,
+                }}
+              >
+                {submitError}
+              </p>
+            ) : null}
             <p
               style={{
                 fontSize: 12,
