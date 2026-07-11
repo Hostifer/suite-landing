@@ -1,4 +1,3 @@
-const CONTACT_EMAIL = "contact@ramybouchareb.me";
 const RESEND_EMAILS_ENDPOINT = "https://api.resend.com/emails";
 
 type ContactPayload = {
@@ -130,7 +129,7 @@ export async function POST(request: Request) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: `Hostifer Suite <${CONTACT_EMAIL}>`,
+      from: `no-reply@ramybouchareb.me`,
       to: ["rami.bouchareb@hostifer.me"],
       reply_to: workEmail,
       subject,
