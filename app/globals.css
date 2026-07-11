@@ -1,26 +1,81 @@
-@import "tailwindcss";
+/*
+ * Global styles for the Hostifer Suite marketing site.
+ * Brand tokens, fonts (Sora + Manrope) and the atomic component classes
+ * (ui-button, ui-badge, ui-card, ui-input, progress, field-label) all come
+ * from the shared design system, imported once in app/layout.tsx:
+ *   import "@hostifer/shared-ui/styles.css"
+ *
+ * This file only adds the marketing-page layout helpers (responsive grid
+ * collapses, mobile nav visibility, form focus) used by the landing pages.
+ */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --hf-bg: #f5f8fc;
+  --hf-ink: #10141c;
+  --hf-secondary: #4b5768;
+  --hf-muted: #8a96a8;
+  --hf-border: #e3e8f0;
+  --hf-dark: #25262a;
+  --hf-gradient: linear-gradient(135deg, #2fd1b8, #4a6cf7 55%, #7c5cfc);
+  --hf-cta: linear-gradient(135deg, #1a3a4d, #25262a 55%, #2a2140);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--hf-bg);
+  color: var(--hf-ink);
+  overflow-x: hidden;
+}
+
+/* Responsive helpers — base layout is set inline on each element and these
+   class rules collapse the grids/rows on small screens (matches the design). */
+@media (max-width: 900px) {
+  .hf-nav-links {
+    display: none !important;
+  }
+  .hf-hamb {
+    display: inline-flex !important;
+  }
+  .hf-hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .hf-hero-visual {
+    margin-top: 40px;
+  }
+  .hf-hero-h {
+    font-size: 36px !important;
+  }
+  .hf-grid-2,
+  .hf-grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+  .hf-grid-4,
+  .hf-grid-5,
+  .hf-grid-6 {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .hf-alt-row,
+  .hf-alt-row-rev {
+    flex-direction: column !important;
+  }
+  .hf-steps {
+    flex-direction: column !important;
+  }
+  .hf-cmp-table {
+    font-size: 12px !important;
+  }
+  .ct-grid,
+  .ct-form-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .hf-grid-4,
+  .hf-grid-5,
+  .hf-grid-6 {
+    grid-template-columns: 1fr !important;
+  }
+  .hf-brand-name-suffix {
+    display: none;
+  }
 }
