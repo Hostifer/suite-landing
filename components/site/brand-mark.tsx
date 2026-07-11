@@ -1,28 +1,20 @@
-import { brand } from "./theme";
+import Image from "next/image";
 
-/** Hostifer Suite logo mark — a gradient rounded square with an "H" monogram.
- *  Rendered in CSS so the site has no binary logo dependency. */
 export function BrandMark({ size = 32 }: { size?: number }) {
   return (
-    <span
+    <Image
+      src="/Hostifer%20Suite%20Logo.png"
+      alt=""
+      width={size}
+      height={size}
       aria-hidden
       style={{
         width: size,
         height: size,
-        borderRadius: size * 0.25,
-        background: brand.gradient,
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
+        display: "block",
         flexShrink: 0,
-        color: "#fff",
-        fontFamily: brand.fontHeading,
-        fontWeight: 800,
-        fontSize: size * 0.56,
-        lineHeight: 1,
+        objectFit: "contain",
       }}
-    >
-      H
-    </span>
+    />
   );
 }
